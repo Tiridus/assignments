@@ -70,7 +70,7 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     :return: Number of countries/regions where the count has not changed in a day
     """
     
-    # Your code  goes here (remove pass)
+    # Your code  goes he re (remove pass)
     pass
  
  
