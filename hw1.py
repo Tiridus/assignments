@@ -1,6 +1,7 @@
 from typing import List
 
 import pandas as pd
+import datetime
 
 CONFIRMED_CASES_URL = f"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data" \
                       f"/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv "
@@ -27,9 +28,10 @@ def poland_cases_by_date(day: int, month: int, year: int = 2020) -> int:
     :param month: Month to get the cases for as an integer indexed from 1
     :return: Number of cases on a given date as an integer
     """
-    
-    # Your code goes here (remove pass)
-    pass
+def poland_cases_by_date(day , month , year = 2020):
+  date=f"{month}/{day}/20"
+  return confirmed_cases.loc[confirmed_cases["Country/Region"]=="Poland"][date].values[0]
+
 
 
 def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
@@ -47,15 +49,14 @@ def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
     :param year: Month to get the countries for as an integer indexed from 1
     :return: A list of strings with the names of the coutires
     """
+def top5_countries_by_date(day, month, year = 2020):
+  result = confirmed_cases.groupby("Country/Region").sum().sort_values(by=[f"{month}/{day}/{year-2000}"], ascending=False).head(5)
+  return list(result.index)
 
-    # Your code goes here (remove pass)
-    pass
 
-# Function name is wrong, read the pydoc
 def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
-    Returns the number of countries/regions where the infection count in a given day
-    was NOT the same as the previous day.
+    Returns the number of countries/regions where the infection count in a given day was the same as the previous day.
 
     Ex.
     >>> no_new_cases_count(11, 2, 2020)
@@ -66,8 +67,12 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     :param day: 4 digit integer representation of the year to get the cases for, defaults to 2020
     :param month: Day of month to get the countries for as an integer indexed from 1
     :param year: Month to get the countries for as an integer indexed from 1
-    :return: Number of countries/regions where the count has not changed in a day
+    :return: Number o f countries/regions where the count has not changed in a day
     """
-    
-    # Your code goes here (remove pass)
-    pass
+def new_cases_count(day, month, year = 2020):
+  d = datetime.date(year, month, day)
+  d1 = d - datetime.timedelta(days = 1)
+  d = d.strftime('%-m/%-d/%y')
+  d1 = d1.strftime('%-m/%-d/%y')
+  new = confirmed_cases.loc[confirmed_cases[d]-confirmed_cases[d1]!=0].count()[1]
+  return new
